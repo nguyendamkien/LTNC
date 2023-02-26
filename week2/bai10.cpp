@@ -24,9 +24,9 @@ int main()
     {
         f[i].a = f[i-1].a + 20;
     }
-    cout << "Fahrebhei" << setw(20) << "Celsius" << setw(20) << "Absolute Value" << endl;
+    cout << setw(20) << left <<"Fahrenheit" << setw(20) << left << "Celsius" << setw(20)  << left << "Absolute Value" << endl;
     for(int  i = 0; i<16 ; i++)
-        cout << f[i].a << setw(20) << setprecision(3) << fixed << f[i].c() << setw(20) << setprecision(3) << fixed << f[i].k() << endl;
+        cout << setw(20) << left << f[i].a << setw(20) << left << setprecision(3) << fixed << f[i].c() << setw(20) << left << setprecision(3) << fixed << f[i].k() << endl;
 
     return 0;
 }
