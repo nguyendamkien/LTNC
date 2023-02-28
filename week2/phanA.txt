@@ -1,0 +1,22 @@
+1. B
+2. A va D 
+3. C
+4. B
+5. D
+6. B continue
+7. C in ra 10
+8. A B C
+9. D
+10.  B
+11.  C the sum is 9
+12.  D 120 30 90
+13.  B.      3
+14.  D.      
+ 
+15.  B.       Hello, world!   Hello, world!          
+16.  C.       Hello, world!   Hello, world!           	Hello, world!
+17.  C.       Hello, world!   Hello, world!           	Hello, world!
+18.  D
+19.  C.       Hello, world!   Hello, world!           	Hello, world!
+20.  B.      Hello, world!   Hello, world!           	Hello, world!
+21. 
