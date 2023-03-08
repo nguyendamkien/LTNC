@@ -1,0 +1,36 @@
+1. bool majority(bool a, bool b, bool c){
+    return a+b+c>=2;
+}
+2. bool eq(int a, int b, int n){
+    for(int i=0; i<n; i++){
+        if(a[i]!=b[i]) return false;
+    }
+    return true;
+}
+3. Chạy 1000 lần
+4. 17
+    17
+5.
+6. Lỗi biên dịch
+7. D. Cả A và B
+8. A. Bao nhiêu cũng được.
+9. B. double funct(char x)
+10. B. int
+11. C. funct();
+12. A. int funct();
+B. int funct(int x) {return x=x+1;}
+13. D. Chạy đúng như mong muốn;
+14. D. Chương trình biên dịch thành công và kết quả khi chạy là : Hello
+15. B. 4
+16. B. Thời gian biên dịch
+17. A. Đúng
+18. B. Sai
+19. B. void
+20. C. foo(void){}
+D. void foo{}
+21. B. Kiểu dữ liệu
+22. D. Không thể được.
+23. D. Hàm thư viện (pre-defined)
+24. B. Sai
+25. C. Hàm có thể được gọi trước khi nó được định nghĩa
+26. B. Là hàm luôn được gọi đầu tiên khi chương trình thực hiện
