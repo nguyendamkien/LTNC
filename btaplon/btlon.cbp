@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="btlon" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/btlon" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/btlon" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="BaseObject.cpp" />
+		<Unit filename="BaseObject.h" />
+		<Unit filename="MainObject.cpp" />
+		<Unit filename="MainObject.h" />
+		<Unit filename="ShowObject.cpp" />
+		<Unit filename="ShowObject.h" />
+		<Unit filename="commonfunc.cpp" />
+		<Unit filename="commonfunc.h" />
+		<Unit filename="explosion.cpp" />
+		<Unit filename="explosion.h" />
+		<Unit filename="gamemap.cpp" />
+		<Unit filename="gamemap.h" />
+		<Unit filename="imptimer..cpp" />
+		<Unit filename="imptimer.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="textobject.cpp" />
+		<Unit filename="textobject.h" />
+		<Unit filename="threatobject.cpp" />
+		<Unit filename="threatobject.h" />
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>
