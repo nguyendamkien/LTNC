@@ -9,6 +9,7 @@
 #include "explosion.h"
 #include "textobject.h"
 #include "ShowObject.h"
+#include "BulletObject.h"
 
 BaseObject gbackground;
 TTF_Font* fontball = NULL;
@@ -34,7 +35,7 @@ bool init()
         }
 
         //Create window
-        gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+        gWindow = SDL_CreateWindow( "POKEMON_GAME", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
         if( gWindow == NULL )
         {
             printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -110,6 +111,18 @@ bool init()
                 success = false;
             }
 
+            gBullet = Mix_LoadWAV("sound//bullet.wav");
+            if(gBullet == NULL)
+            {
+                success = false;
+            }
+
+            gWin = Mix_LoadWAV("sound//win.wav");
+            if(gWin == NULL)
+            {
+                success = false;
+            }
+
 
         }
     }
@@ -132,9 +145,13 @@ void close()
     //Free the sound effects
     Mix_FreeChunk( gEat );
     Mix_FreeChunk( gExplosion );
+    Mix_FreeChunk( gBullet);
+    Mix_FreeChunk( gWin);
 
     gEat = NULL;
     gExplosion = NULL;
+    gBullet = NULL;
+    gWin = NULL;
 
 
     //Free the music
@@ -186,7 +203,7 @@ vector<threatobject*> MakeThreatList()
             p_threat->LoadImg("img//threat_left_1.png", gRenderer);
             p_threat->set_clips();
             p_threat->set_type_move(threatobject::MOVE_IN_SPACE_THREAT_1);
-            p_threat->set_x_pos(10000 + i*1200);// de threat roi rai rac
+            p_threat->set_x_pos(2000 + i*1000);// de threat roi rai rac
             p_threat->set_y_pos(250);
 
             int pos1 = p_threat->get_x_pos() - 120;
@@ -247,9 +264,9 @@ int main(int argc, char* agrv[])
     if(loadBackground() == false)
         return -1;
 
-        bool quit = false;
+    bool quit = false;
     bool is_running = true;
-     //make menu
+    //make menu
     int ret_menu = SDLCommonfunc::ShowMenu(gRenderer, "img//PlayGame.png", "img//Exit.png", "img//backgroundmenu.png");
     if(ret_menu == 1) quit = true;
 
@@ -279,7 +296,7 @@ again_label:
 
     explosion explosionplayer;
     bool explosionret =  explosionplayer.LoadImg("img//explosion.png", gRenderer);
-    //if(explosionret == false) return -1;
+
     explosionplayer.set_clips();
 
     int number_die_ = 5;
@@ -355,9 +372,9 @@ again_label:
                     break;
 
                 case SDLK_p:
-                    {
-                        is_running = !is_running;
-                    }
+                {
+                    is_running = !is_running;
+                }
 
                 }
             }
@@ -365,161 +382,186 @@ again_label:
             p_player.HandelInputaction(gEvent, gRenderer);
         }
 
-        if(is_running){
-
-        fps_timer.unpaused();
-
-        //Clear screen
-        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0XFF );
-        SDL_RenderClear(gRenderer);
-
-        gbackground.Render(gRenderer, NULL);
-        Map map_data = game_map.getMap();
-
-
-        p_player.SetmapXY(map_data.start_x_, map_data.start_y_);
-        p_player.DoPlayer(map_data, gEat);
-        p_player.Show(gRenderer);
-
-        game_map.SetMap(map_data);
-        game_map.DrawMap(gRenderer);
-
-        playerlife.Show(gRenderer);
-        playereatballred.Show(gRenderer);
-        playereatballblue.Show(gRenderer);
-
-        /*std::string str_time="Time: ";
-        Uint32 time_val=SDL_GetTicks()/1000;
-        Uint32 val_time=300-time_val;
-
-        std::string str_val= std::to_string(val_time);
-            str_time+=str_val;
-
-            time_game.SetText(str_time);
-            time_game.LoadFromRenderText(fontball, gRenderer);
-            time_game.RenderText(gRenderer, SCREEN_WIDTH-200, 30);*/
-
-
-        //show score
-        string str_score = "Score: ";
-
-
-        int ball_red = p_player.getballredeat();
-        int ball_blue = p_player.getballblueeat();
-        string ball_red_str = to_string(ball_red);
-        string ball_blue_str = to_string(ball_blue);
-        string score_str = to_string(ball_red*5+ball_blue*10);
-        score.SetText(str_score + score_str);
-        score.LoadFromRenderText(fontball, gRenderer);
-        score.RenderText(gRenderer, SCREEN_WIDTH - 200, 15);
-        score.Free();
-
-
-        ballredgame.SetText(ball_red_str);
-        ballredgame.LoadFromRenderText(fontball, gRenderer);
-        ballredgame.RenderText(gRenderer, SCREEN_WIDTH*0.5 - 100, 15);
-        ballredgame.Free();
-
-        ballbluegame.SetText(ball_blue_str);
-        ballbluegame.LoadFromRenderText(fontball, gRenderer);
-        ballbluegame.RenderText(gRenderer, SCREEN_WIDTH*0.5 + 150, 15);
-        ballbluegame.Free();
-
-
-        for(int i=0; i<threats_list.size(); i++)
+        if(is_running)
         {
-            threatobject* p_threat = threats_list.at(i);
-            if(p_threat != NULL)
+
+
+            //Clear screen
+            SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0XFF );
+            SDL_RenderClear(gRenderer);
+
+            gbackground.Render(gRenderer, NULL);
+            Map map_data = game_map.getMap();
+
+            p_player.HandleBullet(gRenderer);
+            p_player.SetmapXY(map_data.start_x_, map_data.start_y_);
+            p_player.DoPlayer(map_data, gEat);
+            p_player.Show(gRenderer);
+
+            game_map.SetMap(map_data);
+            game_map.DrawMap(gRenderer);
+
+            playerlife.Show(gRenderer);
+            playereatballred.Show(gRenderer);
+            playereatballblue.Show(gRenderer);
+
+            //show score
+            string str_score = "Score: ";
+
+
+            int ball_red = p_player.getballredeat();
+            int ball_blue = p_player.getballblueeat();
+            string ball_red_str = to_string(ball_red);
+            string ball_blue_str = to_string(ball_blue);
+            string score_str = to_string(ball_red*5+ball_blue*10);
+            score.SetText(str_score + score_str);
+            score.LoadFromRenderText(fontball, gRenderer);
+            score.RenderText(gRenderer, SCREEN_WIDTH - 200, 15);
+            score.Free();
+
+
+            ballredgame.SetText(ball_red_str);
+            ballredgame.LoadFromRenderText(fontball, gRenderer);
+            ballredgame.RenderText(gRenderer, SCREEN_WIDTH*0.5 - 100, 15);
+            ballredgame.Free();
+
+            ballbluegame.SetText(ball_blue_str);
+            ballbluegame.LoadFromRenderText(fontball, gRenderer);
+            ballbluegame.RenderText(gRenderer, SCREEN_WIDTH*0.5 + 150, 15);
+            ballbluegame.Free();
+
+
+            for(int i=0; i<threats_list.size(); i++)
             {
-                p_threat->SetMapXY(map_data.start_x_, map_data.start_y_);
-                p_threat->ImpMoveType(gRenderer);
-                p_threat->DoPlayer(map_data);
-                p_threat->Show(gRenderer);
-            }
-
-            SDL_Rect rect_player = p_player.GetRectFrame();
-            SDL_Rect rect_threat = p_threat->GetRectFrame();
-
-            int frame_explosion_width = explosionplayer.get_width_frame();
-            int frame_explosion_height = explosionplayer.get_height_frame();
-
-            number_life_new = p_player.get_number_life();
-            if(number_life_new > number_life_past)
-            {
-                if(number_die_ < 5)
+                threatobject* p_threat = threats_list.at(i);
+                if(p_threat != NULL)
                 {
-                    number_die_++;
-                    playerlife.Increase();
-                    playerlife.Render(gRenderer);
-                    number_life_past = number_life_new;
-
+                    p_threat->SetMapXY(map_data.start_x_, map_data.start_y_);
+                    p_threat->ImpMoveType(gRenderer);
+                    p_threat->DoPlayer(map_data);
+                    p_threat->Show(gRenderer);
                 }
-                else{
-                    number_life_past = number_life_new;
-                }
-            }
 
 
+                int frame_explosion_width = explosionplayer.get_width_frame();
+                int frame_explosion_height = explosionplayer.get_height_frame();
 
+                bool check1 = false;
 
-
-            bool check = false;
-
-            check = SDLCommonfunc::Checkcollision(rect_player, rect_threat);
-
-            number_fall_new = p_player.get_number_falling();
-
-            if(check || number_fall_new > number_fall_past )
-            {
-                for(int i=0; i<4; i++)
+                vector<BulletObject*> bullet_arr = p_player.get_bullet_list();
+                for(int t = 0; t < bullet_arr.size(); t++)
                 {
-                    int x_pos = (p_player.GetRect().x + p_player.GetRect().w*0.25) - frame_explosion_width*0.5;
-                    int y_pos = (p_player.GetRect().y + p_player.GetRect().h*0.5) - frame_explosion_height*0.5;
-
-                    explosionplayer.set_frame(i);
-                    explosionplayer.SetRect(x_pos, y_pos);
-                    explosionplayer.Show(gRenderer);
-                    SDL_RenderPresent(gRenderer);
-                }
-                Mix_PlayChannel( -1, gExplosion, 0 );
-                number_fall_past = number_fall_new;
-                number_die_--;
-                if(number_die_ >= 0)
-                {
-                    p_player.SetRect(0,0);
-                    p_player.set_come_back_time_(60);
-                    SDL_Delay(1000);
-                    playerlife.Decrease();
-                    playerlife.Render(gRenderer);
-                    continue;
-                }
-                else
-                {
-                    fps_timer.stop();
-                    int high_score = load_high_score();
-                    my_score = ball_red*5 + ball_blue*10;
-                    if(my_score > high_score)
+                    BulletObject* p_bullet = bullet_arr.at(t);
+                    if(p_bullet != NULL)
                     {
-                        high_score = my_score;
-                        save_high_score(high_score);
+                        for(int p = 0; p < threats_list.size(); p++)
+                        {
+                            threatobject* obj_threat = threats_list.at(p);
+                            if(obj_threat != NULL)
+                            {
+                                SDL_Rect tRect;
+                                tRect.x = obj_threat->GetRect().x;
+                                tRect.y = obj_threat->GetRect().y;
+                                tRect.w = obj_threat->get_width_frame();
+                                tRect.h = obj_threat->get_height_frame();
+
+                                SDL_Rect bRect = p_bullet->GetRect();
+                                bool check1 = SDLCommonfunc::Checkcollision(bRect, tRect);
+                                if(check1 == true)
+                                {
+                                    Mix_PlayChannel( -1, gBullet, 0 );
+                                    p_player.RemoveBullet(t);
+                                    obj_threat->Free();
+                                    threats_list.erase(threats_list.begin()+p);
+                                }
+                            }
+
+                        }
                     }
-                    int ret_end = SDLCommonfunc::ShowMenuend(gRenderer,fontmenu,to_string(my_score),to_string(high_score),"img//RePlay.png","img//Exit.png","img//background00.png" );
-                    if(ret_end == 1) quit = true;
+                }
+
+
+
+
+                bool check = false;
+
+                SDL_Rect rect_player = p_player.GetRectFrame();
+                SDL_Rect rect_threat = p_threat->GetRectFrame();
+
+
+
+                number_life_new = p_player.get_number_life();
+                if(number_life_new > number_life_past)
+                {
+                    if(number_die_ < 5)
+                    {
+                        number_die_++;
+                        playerlife.Increase();
+                        playerlife.Render(gRenderer);
+                        number_life_past = number_life_new;
+
+                    }
                     else
                     {
-                        quit = false;
-                        goto again_label;
+                        number_life_past = number_life_new;
                     }
-
-
                 }
+
+                check = SDLCommonfunc::Checkcollision(rect_player, rect_threat);
+
+                number_fall_new = p_player.get_number_falling();
+
+                if(check || number_fall_new > number_fall_past )
+                {
+                    for(int i=0; i<4; i++)
+                    {
+                        int x_pos = (p_player.GetRect().x + p_player.GetRect().w*0.25) - frame_explosion_width*0.5;
+                        int y_pos = (p_player.GetRect().y + p_player.GetRect().h*0.5) - frame_explosion_height*0.5;
+
+                        explosionplayer.set_frame(i);
+                        explosionplayer.SetRect(x_pos, y_pos);
+                        explosionplayer.Show(gRenderer);
+                        SDL_RenderPresent(gRenderer);
+                    }
+                    Mix_PlayChannel( -1, gExplosion, 0 );
+                    number_fall_past = number_fall_new;
+                    number_die_--;
+                    if(number_die_ >= 0)
+                    {
+                        p_player.SetRect(0,0);
+                        p_player.set_come_back_time_(60);
+                        SDL_Delay(1000);
+                        playerlife.Decrease();
+                        playerlife.Render(gRenderer);
+                        continue;
+                    }
+                    else
+                    {
+                        int high_score = load_high_score();
+                        my_score = ball_red*5 + ball_blue*10;
+                        if(my_score > high_score)
+                        {
+                            high_score = my_score;
+                            save_high_score(high_score);
+                        }
+                        Mix_PlayChannel( -1, gWin, 0 );
+                        int ret_end = SDLCommonfunc::ShowMenuend(gRenderer,fontmenu,to_string(my_score),to_string(high_score),"img//RePlay.png","img//Exit.png","img//background00.png" );
+                        if(ret_end == 1) quit = true;
+                        else
+                        {
+                            quit = false;
+                            goto again_label;
+                        }
+
+
+                    }
+                }
+
+
             }
 
-
-        }
-
-        //khi win
-        you_win = p_player.get_win();
+            //khi win
+            you_win = p_player.get_win();
             if(you_win)
             {
                 int high_score = load_high_score();
@@ -530,31 +572,29 @@ again_label:
                     save_high_score(high_score);
                 }
                 Mix_PauseMusic();
+                Mix_PlayChannel( -1, gWin, 0 );
                 int ret_win = SDLCommonfunc::ShowMenuwin(gRenderer,fontmenu,to_string(my_score),to_string(high_score),"img//Exit.png","img//YouWin.png" );
                 if(ret_win == 1) quit = true;
 
             }
 
-        SDL_RenderPresent(gRenderer);
+            SDL_RenderPresent(gRenderer);
 
+            int real_imp_timer = fps_timer.get_ticks(); // thoi gian thuc su troi qua
+            int time_one_frame = 2000/FRAME_PER_SECOND; // 1000 la 1 s = 1000ms
+            if(real_imp_timer < time_one_frame) //thoigianthucte nho hon li thuyet
+            {
+                int delay_time = time_one_frame - real_imp_timer;
+                if(delay_time >= 0)
+                    SDL_Delay(delay_time);// neu delay time cang lon thi chuong trinh cang cham dan. delay time lon khi FRAME_PER_SECOND nho
+            }
 
-
-        int real_imp_timer = fps_timer.get_ticks(); // thoi gian thuc su troi qua
-        int time_one_frame = 2000/FRAME_PER_SECOND; // 1000 la 1 s = 1000ms
-        if(real_imp_timer < time_one_frame) //thoigianthucte nho hon li thuyet
-        {
-            int delay_time = time_one_frame - real_imp_timer;
-            if(delay_time >= 0)
-                SDL_Delay(delay_time);// neu delay time cang lon thi chuong trinh cang cham dan. delay time lon khi FRAME_PER_SECOND nho
         }
 
-    }
-
-    else
-    {
-        fps_timer.paused();
-        SDL_Delay(100);
-    }
+        else
+        {
+            SDL_Delay(100);
+        }
     }
 
 
