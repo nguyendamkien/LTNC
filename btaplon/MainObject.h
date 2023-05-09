@@ -4,6 +4,7 @@
 
 #include "commonfunc.h"
 #include "BaseObject.h"
+#include "BulletObject.h"
 
 #define GRAVITY_SPEED 0.8 // trong luc roi
 #define MAX_FALL_SPEED 10 // toc do roi toi da
@@ -47,7 +48,20 @@ class MainObject : public BaseObject // ke thua
         int get_number_life() const {return number_life;}
         bool get_win() {return win;}
 
+        void set_bullet_list(vector<BulletObject*> bullet_list)
+        {
+            p_bullet_list_ = bullet_list;
+        }
+
+        vector<BulletObject*> get_bullet_list() const {return p_bullet_list_;}
+
+        void HandleBullet(SDL_Renderer* gRenderer);
+
+        void RemoveBullet(const int& idx); // idx vien dan thu bn
     private:
+
+        vector<BulletObject*> p_bullet_list_;
+
         int count_ball_red;
         int count_ball_blue;
 
