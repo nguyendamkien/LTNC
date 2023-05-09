@@ -56,7 +56,6 @@ void ShowObject::Increase()
     if(number_ == 1) last_pos = -20;
     last_pos += 40; // khoang cach 40
     pos_list_.push_back(last_pos);
-    // xu li am thanh
 }
 
 ShowBall::ShowBall()
