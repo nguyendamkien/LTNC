@@ -149,6 +149,29 @@ void MainObject::HandelInputaction(SDL_Event events, SDL_Renderer* gRenderer)
             input_type_.jump_ = 1;
         }
         break;
+
+        case SDLK_SPACE:
+            {
+                BulletObject* p_bullet = new BulletObject();
+                p_bullet->LoadImg("img//bullet.png", gRenderer);
+                if(status_ == WALK_LEFT)
+                {
+                    p_bullet->Set_bullet_dir(BulletObject::dir_left);
+                    p_bullet->SetRect(this->rect_.x - 20, rect_.y + height_frame_*0.5);
+                }
+                else
+                {
+                    p_bullet->Set_bullet_dir(BulletObject::dir_right);
+                     p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_*0.5);
+                }
+
+
+
+                p_bullet->Set_x_val(20);
+                p_bullet->Set_is_move(true);
+
+                p_bullet_list_.push_back(p_bullet);
+            }
         default:
             break;
         }
@@ -181,6 +204,46 @@ void MainObject::HandelInputaction(SDL_Event events, SDL_Renderer* gRenderer)
 
 }
 
+void MainObject::HandleBullet(SDL_Renderer* gRenderer)
+{
+    for(int i=0; i < p_bullet_list_.size(); i++)
+    {
+        BulletObject* p_bullet = p_bullet_list_.at(i);
+        if(p_bullet != NULL)
+        {
+            if(p_bullet->Get_is_move() == true)
+            {
+                p_bullet->HandleMove(SCREEN_WIDTH, SCREEN_HEIGHT);
+                p_bullet->Render(gRenderer);
+            }
+            else
+            {
+                p_bullet_list_.erase(p_bullet_list_.begin() + i);
+                if(p_bullet != NULL)
+                {
+                    delete p_bullet;
+                    p_bullet = NULL;
+                }
+            }
+        }
+    }
+}
+
+void MainObject::RemoveBullet(const int& idx) // xoa dan
+{
+    int size = p_bullet_list_.size();
+    if(size>0 && idx < size)
+    {
+        BulletObject* p_bullet = p_bullet_list_.at(idx);
+        p_bullet_list_.erase(p_bullet_list_.begin() + idx);
+
+        if(p_bullet)
+        {
+            delete p_bullet;
+            p_bullet = NULL;
+        }
+    }
+}
 
 void MainObject::DoPlayer(Map& map_data, Mix_Chunk* gHigh)
 {
