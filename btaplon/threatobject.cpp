@@ -294,7 +294,7 @@ void threatobject::ImpMoveType(SDL_Renderer* screen)
     {
         if(on_ground_ == true)
         {
-            if(x_pos_ >animation_b_)
+            if(x_pos_ > animation_b_)
             {
                 input_type_.left_ = 1;
                 input_type_.right_ = 0;
