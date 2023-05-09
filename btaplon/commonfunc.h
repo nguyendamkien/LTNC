@@ -24,6 +24,8 @@ static Mix_Music *gMusic = NULL;
 //The sound effects that will be used
 static Mix_Chunk *gEat = NULL;
 static Mix_Chunk *gExplosion = NULL;
+static Mix_Chunk *gBullet = NULL;
+static Mix_Chunk *gWin = NULL;
 
 //*Screen
 const int FRAME_PER_SECOND = 60; // fps -- la so frame tren 1 giay
@@ -55,7 +57,7 @@ typedef struct Map
     int start_x_;
     int start_y_;
 
-    int max_x_; // chi so o
+    int max_x_; // chieu x lon nhat
     int max_y_;
 
     int tile[MAX_MAP_Y][MAX_MAP_X]; //
