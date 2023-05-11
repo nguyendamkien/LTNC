@@ -48,9 +48,9 @@ void gamemap::LoadTiles( SDL_Renderer* gRenderer)
 
     for(int i=0; i< MAX_TILES; i++)
     {
-        sprintf_s(file_img, "map/%d.png", i ); // anh
+        sprintf_s(file_img, "map/%d.png", i ); // luu chuoi den duong dan  mo ah vao file_img va dinh dang bang bien i
 
-        fopen_s(&fp, file_img, "rb");
+        fopen_s(&fp, file_img, "rb"); // mo tep luu trong file_img va luu vao fp
 
         if(fp == NULL)
         {
