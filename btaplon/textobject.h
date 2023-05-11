@@ -10,7 +10,7 @@ public:
     TextObject();
     ~TextObject();
 
-    enum TextColor
+    enum TextColor // textcolor ten kieu enum
     {
         RED_TEXT,
         WHITE_TEXT,
