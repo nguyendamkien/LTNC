@@ -242,6 +242,7 @@ void save_high_score(int score)
 {
     ofstream file("high_score.txt");
     file << score << endl;
+    file.close();
 }
 
 // doc high score
@@ -251,6 +252,7 @@ int load_high_score()
     ifstream file("high_score.txt");
     file >> High_score;
     return High_score;
+    file.close();
 }
 
 
@@ -299,7 +301,7 @@ again_label:
 
     explosionplayer.set_clips();
 
-    int number_die_ = 5;
+    int number_live_ = 5;
     int number_fall_past = 0;
     int number_fall_new = 0;
 
@@ -393,7 +395,7 @@ again_label:
             gbackground.Render(gRenderer, NULL);
             Map map_data = game_map.getMap();
 
-            p_player.HandleBullet(gRenderer);
+            p_player.HandleBullet(gRenderer); // kiem tra dan
             p_player.SetmapXY(map_data.start_x_, map_data.start_y_);
             p_player.DoPlayer(map_data, gEat);
             p_player.Show(gRenderer);
@@ -493,9 +495,9 @@ again_label:
                 number_life_new = p_player.get_number_life();
                 if(number_life_new > number_life_past)
                 {
-                    if(number_die_ < 5)
+                    if(number_live_ < 5)
                     {
-                        number_die_++;
+                        number_live_++;
                         playerlife.Increase();
                         playerlife.Render(gRenderer);
                         number_life_past = number_life_new;
@@ -525,8 +527,8 @@ again_label:
                     }
                     Mix_PlayChannel( -1, gExplosion, 0 );
                     number_fall_past = number_fall_new;
-                    number_die_--;
-                    if(number_die_ >= 0)
+                    number_live_--;
+                    if(number_live_ >= 0)
                     {
                         p_player.SetRect(0,0);
                         p_player.set_come_back_time_(60);
@@ -581,12 +583,12 @@ again_label:
             SDL_RenderPresent(gRenderer);
 
             int real_imp_timer = fps_timer.get_ticks(); // thoi gian thuc su troi qua
-            int time_one_frame = 2000/FRAME_PER_SECOND; // 1000 la 1 s = 1000ms
+            int time_one_frame = 1000/FRAME_PER_SECOND; // 1000 la 1 s = 1000ms - thoi gian ve mot khung hinh
             if(real_imp_timer < time_one_frame) //thoigianthucte nho hon li thuyet
             {
                 int delay_time = time_one_frame - real_imp_timer;
                 if(delay_time >= 0)
-                    SDL_Delay(delay_time);// neu delay time cang lon thi chuong trinh cang cham dan. delay time lon khi FRAME_PER_SECOND nho
+                    SDL_Delay(delay_time);// neu delay time cang lon thi chuong trinh cang cham dan. delay time lon khi FRAME_PER_SECOND nho - de cac frame hien muot hon
             }
 
         }
