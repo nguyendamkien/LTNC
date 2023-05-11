@@ -27,7 +27,7 @@ bool BaseObject:: LoadImg(std::string path, SDL_Renderer* gRenderer)
 
     if(load_Surface != NULL)
     {
-        SDL_SetColorKey( load_Surface, SDL_TRUE, SDL_MapRGB( load_Surface->format, 0x00, 0x00, 0x00 ) );
+        SDL_SetColorKey( load_Surface, SDL_TRUE, SDL_MapRGB( load_Surface->format, 0x00, 0x00, 0x00 ) ); // thiet lap mau trong suot
         new_texture = SDL_CreateTextureFromSurface( gRenderer, load_Surface );
         if(new_texture != NULL)
         {
