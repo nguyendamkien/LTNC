@@ -162,7 +162,7 @@ void MainObject::HandelInputaction(SDL_Event events, SDL_Renderer* gRenderer)
                 else
                 {
                     p_bullet->Set_bullet_dir(BulletObject::dir_right);
-                     p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_*0.5);
+                    p_bullet->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_*0.5);
                 }
 
 
