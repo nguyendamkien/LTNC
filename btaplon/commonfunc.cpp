@@ -133,35 +133,7 @@ int SDLCommonfunc::ShowMenu(SDL_Renderer* g_screen,
                 optionmenu[1].Free();
                 gBackground.Free();
                 return 1;
-            /*case SDL_MOUSEMOTION:
-                x = event.motion.x;
-                y = event.motion.y;
-                for (int i = 0; i < kMenuNum; ++i)
-                {
-                    if (x >= optionmenu[i].GetRect().x && x <= optionmenu[i].GetRect().x + optionmenu[i].GetRect().w &&
-                        y >= optionmenu[i].GetRect().y && y <= optionmenu[i].GetRect().y + optionmenu[i].GetRect().h)
-                    {
-                        if (!selected[i])
-                        {
-                            selected[i] = 1;
-                            text_object[i].SetText(labels[i]);
-                            text_object[i].SetColor(color[1].r, color[1].g, color[1].b);
-                            text_object[i].LoadFromRenderText(font, g_screen);
-                        }
-                    }
-                    else
-                    {
-                        if (selected[i])
-                        {
-                            selected[i] = 0;
-                            text_object[i].Free();
-                            text_object[i].SetText(labels[i]);
-                            text_object[i].SetColor(color[0].r, color[0].g, color[0].b);
-                            text_object[i].LoadFromRenderText(font, g_screen);
-                        }
-                    }
-                }
-                break;*/
+
             case SDL_MOUSEBUTTONDOWN:
                 x = event.button.x;
                 y = event.button.y;
