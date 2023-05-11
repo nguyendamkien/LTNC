@@ -27,7 +27,7 @@ class BaseObject
         void Free();
 
 
-	protected:
+	protected: // cho phép cac lop ke thua goi bien
 		SDL_Texture* p_object_;
 		SDL_Rect rect_;
 
