@@ -3,7 +3,7 @@
 
 TextObject::TextObject()
 {
-    text_color_.r = 255;
+    text_color_.r = 255; // mau trang
     text_color_.g = 255;
     text_color_.b = 255;
     texture_ = NULL;
