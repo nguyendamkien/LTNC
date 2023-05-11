@@ -28,10 +28,9 @@ static Mix_Chunk *gBullet = NULL;
 static Mix_Chunk *gWin = NULL;
 
 //*Screen
-const int FRAME_PER_SECOND = 60; // fps -- la so frame tren 1 giay
+const int FRAME_PER_SECOND = 30; // fps -- la so frame tren 1 giay
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 640;
-//const int SCREEN_BPP = 32;
 
 #define BLANK_TILE 0
 #define TILE_SIZE 64 // map
@@ -69,12 +68,12 @@ namespace SDLCommonfunc
 {
     bool Checkcollision(const SDL_Rect& object1, const SDL_Rect& object2);
 
-      int ShowMenu(SDL_Renderer* g_screen,
+    int ShowMenu(SDL_Renderer* g_screen,
                       const std::string& menu1,
                       const std::string& menu2,
                       const std::string& img_name);
 
-      int ShowMenuend(SDL_Renderer* g_screen,
+    int ShowMenuend(SDL_Renderer* g_screen,
                       TTF_Font* font,
                       string myscore,
                       string highscore,
