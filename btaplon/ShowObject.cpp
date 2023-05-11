@@ -22,7 +22,7 @@ void ShowObject::Init(SDL_Renderer* screen)
     number_ = 5; // 5 mang
     if(pos_list_.size() > 0)
     {
-        pos_list_.clear();
+        pos_list_.clear(); // kiem tra truoc khi them vao de trong pos_list_ khong co gi
     }
 
     AddPos(20); // vi tri mang
@@ -46,7 +46,7 @@ void ShowObject::Show(SDL_Renderer* screen)
 void ShowObject::Decrease()
 {
     number_--;
-    pos_list_.pop_back();
+    pos_list_.pop_back(); // xoa phan tu cuoi cung trong vector
 }
 
 void ShowObject::Increase()
